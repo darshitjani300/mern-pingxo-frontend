@@ -14,8 +14,6 @@ const Message = () => {
   const openMobileChat = useAppSelector((state) => state.chatSlice.open);
   const dispatch = useAppDispatch();
 
-  console.log(openMobileChat)
-
   const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!input || !userProfile.userId) return;
@@ -52,7 +50,7 @@ const Message = () => {
 
           <div className={styles.imageContainer}>
             <img
-              src={`http://localhost:8001${userProfile.picture}`}
+              src={`${userProfile?.picture?.url || "person.png"}`}
               alt="Icon"
               className={styles.image}
             />

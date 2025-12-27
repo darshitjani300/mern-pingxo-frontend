@@ -35,56 +35,19 @@ const NavMenu = () => {
       text: "Profile",
       size: 28,
       path: "/profile",
-      url: data.picture?.url || "",
+      url: data.picture?.url || "person.png",
     },
   ];
-
-  const upperIcons = icons?.splice(0, 1);
-  const lowerIcons = icons;
 
   return (
     <div className={styles.container}>
       <div className={styles.containerWrapper}>
         <div className={styles.iconContainer}>
-          <ul className={styles.upperContainer}>
-            {upperIcons &&
-              upperIcons?.map((elem: NavIconType) => {
-                const isActive = elem?.id === active;
-
-                return (
-                  <li
-                    key={elem?.id}
-                    className={`${styles.icon} ${
-                      isActive ? styles.activeIcon : ""
-                    }`}
-                    onClick={() => {
-                      setActive(elem?.id);
-                      navigate(elem?.path || "/");
-                    }}
-                  >
-                    <NavIcon
-                      name={isActive ? elem?.activeName : elem?.name}
-                      size={elem?.size}
-                      className={
-                        isActive ? styles.iconStyleActive : styles.iconStyle
-                      }
-                    />
-                    <span
-                      className={`${styles.text} ${
-                        isActive ? styles.activeText : ""
-                      } `}
-                    >
-                      {elem?.text}
-                    </span>
-                  </li>
-                );
-              })}
-          </ul>
-
           <ul className={styles.lowerContainer}>
-            {lowerIcons &&
-              lowerIcons?.map((elem) => {
+            {icons &&
+              icons?.map((elem) => {
                 const isActive = elem?.id === active;
+                const notPublic = elem?.url === "person.png";
 
                 return (
                   <li
@@ -101,7 +64,9 @@ const NavMenu = () => {
                       <img
                         src={elem?.url}
                         alt="photo"
-                        className={styles.profilePhoto}
+                        className={`${styles.profilePhoto} ${
+                          isActive && !notPublic ? styles.activePhoto : ""
+                        }`}
                       />
                     ) : (
                       <NavIcon

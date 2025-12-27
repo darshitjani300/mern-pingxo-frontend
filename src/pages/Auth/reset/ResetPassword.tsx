@@ -6,6 +6,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { resetApi } from "../../../api/authApi";
 import { toastMessage } from "../../../utils/toastMessage";
 import { resetSchema } from "../../../validations/authSchema";
+import resetBg from "../../../assets/images/reset.webp";
 
 interface ErrorState {
   password: string | null;
@@ -107,7 +108,7 @@ const ResetPassword = () => {
     <section>
       <div className={styles.container}>
         <div className={styles.imageContainer}>
-          <img src="/src/assets/images/reset.webp" alt="VibeChat background" />
+          <img src={resetBg} alt="VibeChat background" />
         </div>
 
         <div className={styles.formContainer}>

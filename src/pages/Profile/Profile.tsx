@@ -123,14 +123,12 @@ const Profile = () => {
         <button onClick={() => navigate(-1)} className={styles.btnBack}>
           <NavIcon name="IoArrowBackOutline" />
         </button>
+
         <div className={styles.imageContainer}>
           <img
-            src={
-              profileData?.pictureUrl
-                ? profileData?.pictureUrl
-                : "/default-avatar.png"
-            }
+            src={profileData?.pictureUrl ? profileData?.pictureUrl : "user.png"}
             alt="profile"
+            className={`${!profileData?.pictureUrl && styles.imagePadding}`}
           />
         </div>
 

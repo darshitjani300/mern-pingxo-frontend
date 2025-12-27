@@ -15,8 +15,6 @@ export const getProfileApi = async () => {
 };
 
 export const getAllProfileApi = async () => {
-  const response = await axiosInstace.get("/v1/getAllProfile");
+  const response = await axiosInstace.get("/v1/getPeople");
   return response;
 };
-
-

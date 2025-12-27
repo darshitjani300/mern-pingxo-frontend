@@ -17,7 +17,9 @@ const Conversation = () => {
   const dispatch = useAppDispatch();
   const [data, setData] = useState<
     Array<{
-      picture: string;
+      picture: {
+        url: string;
+      };
       name: string;
       about: string;
       userId: string;
@@ -34,7 +36,7 @@ const Conversation = () => {
   const handleReduxStore = async (
     id: string,
     item: {
-      picture: string;
+      picture: { url: string };
       name: string;
       about: string;
       userId: string;
@@ -74,9 +76,7 @@ const Conversation = () => {
   }, [userData?.userId]);
 
   return (
-    <div
-      className={styles.conversationWrapper}
-    >
+    <div className={styles.conversationWrapper}>
       <div className={styles.containerWrapper}>
         {filterData.map((item) => (
           <div
@@ -86,7 +86,7 @@ const Conversation = () => {
           >
             <div className={styles.imageContainer}>
               <img
-                src={`http://localhost:8001${item.picture}`}
+                src={`${item.picture?.url ? item.picture?.url : "person.png"}`}
                 alt="Icon"
                 className={styles.image}
               />

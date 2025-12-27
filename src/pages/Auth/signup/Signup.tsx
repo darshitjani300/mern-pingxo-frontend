@@ -7,6 +7,7 @@ import { toastMessage } from "../../../utils/toastMessage";
 import { Link, useNavigate } from "react-router-dom";
 import { signupSchema } from "../../../validations/authSchema";
 import { useAuth } from "../../../context/AuthContext";
+import signupBg from "../../../assets/images/signup.webp";
 
 interface LoginData {
   username: string;
@@ -101,7 +102,7 @@ const Signup = () => {
     <section>
       <div className={styles.container}>
         <div className={styles.imageContainer}>
-          <img src="/src/assets/images/signup.webp" alt="VibeChat background" />
+          <img src={signupBg} alt="VibeChat background" />
         </div>
 
         <div className={styles.formContainer}>

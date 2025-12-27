@@ -1,33 +1,39 @@
 import axios from "axios";
+import { logout } from "../authApi";
+import { toastMessage } from "../../utils/toastMessage";
 
 const BaseUrl = import.meta.env.VITE_BASE_URL;
 
 const axiosInstace = axios.create({
   baseURL: BaseUrl,
   timeout: 10000,
-  // headers: {
-  //   "Content-Type": "application/json",
-  // },
   withCredentials: true,
 });
 
-async function serverLogout() {
+const handleLogout = async () => {
   try {
-    await axiosInstace.post("/auth/logout", {}, { withCredentials: true });
-    localStorage.removeItem("user");
-    window.location.href = "/login";
+    const response = await logout();
+
+    if (response.status === true) {
+      toastMessage("success", "Sign-out");
+      window.location.reload();
+    }
   } catch (error) {
-    console.log(error);
+    toastMessage("error", "Error signing out");
   }
-}
+};
 
 axiosInstace.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    if (originalRequest.url.includes("/auth/refresh")) {
-      await serverLogout();
+    if (originalRequest?.url?.includes("/v1/auth/me")) {
+      return Promise.reject(error);
+    }
+
+    if (originalRequest?.url?.includes("/v1/auth/refresh")) {
+      await handleLogout();
       return Promise.reject(error);
     }
 
@@ -36,10 +42,15 @@ axiosInstace.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        await axiosInstace.post("/auth/refresh", {}, { withCredentials: true });
+        await axiosInstace.post(
+          "/v1/auth/refresh",
+          {},
+          { withCredentials: true }
+        );
         return axiosInstace(originalRequest);
       } catch (error) {
-        Promise.reject(error);
+        await handleLogout();
+        return Promise.reject(error);
       }
     }
     return Promise.reject(error);

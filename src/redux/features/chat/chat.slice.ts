@@ -14,7 +14,7 @@ export interface UserState {
   profile: {
     name: string;
     about: string;
-    picture: string;
+    picture: { url: string };
     userId: string;
     _id: string;
   };
@@ -30,7 +30,7 @@ const initialState: UserState = {
   profile: {
     name: "",
     about: "",
-    picture: "",
+    picture: { url: "" },
     userId: "",
     _id: "",
   },
@@ -53,7 +53,7 @@ export const userSlice = createSlice({
       action: PayloadAction<{
         name: string;
         about: string;
-        picture: string;
+        picture: { url: string };
         userId: string;
         _id: string;
       }>

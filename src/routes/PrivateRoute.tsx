@@ -7,6 +7,7 @@ const PrivateRoute = () => {
 
   if (loading) return <div>Loading...</div>;
   if (!user) return <Navigate to="/login" replace />;
+
   return (
     <div style={{ display: "flex" }}>
       <NavMenu />

@@ -7,6 +7,7 @@ import { loginApi } from "../../../api/authApi";
 import { toastMessage } from "../../../utils/toastMessage";
 import { loginSchema } from "../../../validations/authSchema";
 import { useAuth } from "../../../context/AuthContext";
+import loginBg from "../../../assets/images/login.webp";
 
 interface ErrorState {
   email: string | null;
@@ -99,7 +100,7 @@ const Login = () => {
     <section>
       <div className={styles.container}>
         <div className={styles.imageContainer}>
-          <img src="/src/assets/images/login.webp" alt="VibeChat background" />
+          <img src={loginBg} alt="VibeChat background" />
         </div>
 
         <div className={styles.formContainer}>

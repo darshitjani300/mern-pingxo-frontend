@@ -13,13 +13,13 @@ const Chat = () => {
     <section
       className={`${styles.container} ${
         openMobileChat ? styles.msgWrapper : ""
-      } `}
+      }`}
     >
       <div className={styles.headerContainer}>
         <h1>VibeChat</h1>
         <Link to={"/profile"}>
           <img
-            src={data.picture?.url}
+            src={data.picture?.url ? data.picture?.url : "person.png"}
             alt="photo"
             className={styles.profilePhoto}
           />

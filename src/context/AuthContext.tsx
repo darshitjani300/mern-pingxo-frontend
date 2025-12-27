@@ -1,6 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axiosInstace from "../api/axios/axiosInstance";
 import { saveCachedUser } from "../utils/cache";
+import { getProfileApi } from "../api/profile";
+import { userProfile } from "../redux/features/chat/chat.slice";
+import { useAppDispatch } from "../types/reduxHooks";
 
 type AuthContextType = {
   user: any;
@@ -19,13 +22,7 @@ const AuthContext = createContext<AuthContextType>({
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const PUBLIC_ROUTES = [
-    "/",
-    "/login",
-    "/signup",
-    "/forgetpassword",
-    "/resetpassword",
-  ];
+  const dispatch = useAppDispatch();
 
   const checkAuth = async () => {
     setLoading(true);
@@ -42,22 +39,41 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  useEffect(() => {
-    if (!PUBLIC_ROUTES.includes(window.location.pathname)) {
-      checkAuth();
-    } else {
-      setLoading(false);
-    }
-  }, []);
+  const fetchProfile = async () => {
+    try {
+      const res = await getProfileApi();
+      const profile = res.data.profile;
 
-  const logout = async () => {
-    await axiosInstace.post("/auth/logout", {}, { withCredentials: true });
-    setUser(null);
-    window.location.href = "/login";
+      if (!profile) {
+        return;
+      }
+
+      dispatch(userProfile(profile));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  useEffect(() => {
+    if (!loading && user) {
+      fetchProfile();
+    }
+  }, [loading, user]);
+
   return (
-    <AuthContext.Provider value={{ user, loading, checkAuth, logout } as any}>
+    <AuthContext.Provider
+      value={
+        {
+          user,
+          loading,
+          checkAuth,
+        } as any
+      }
+    >
       {children}
     </AuthContext.Provider>
   );

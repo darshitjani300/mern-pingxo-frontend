@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { forgetApi } from "../../../api/authApi";
 import { toastMessage } from "../../../utils/toastMessage";
 import { forgetSchema } from "../../../validations/authSchema";
+import forgotBg from "../../../assets/images/forget.webp";
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState<string>("");
@@ -55,7 +56,7 @@ const ForgetPassword = () => {
     <section>
       <div className={styles.container}>
         <div className={styles.imageContainer}>
-          <img src="/src/assets/images/forget.webp" alt="VibeChat background" />
+          <img src={forgotBg} alt="VibeChat background" />
         </div>
 
         <div className={styles.formContainer}>
