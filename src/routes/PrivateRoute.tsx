@@ -45,7 +45,7 @@ const PrivateRoute = () => {
     return <Navigate to={"/profile"} replace />;
 
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex", height: "100%" }}>
       <NavMenu />
       <Outlet />
     </div>

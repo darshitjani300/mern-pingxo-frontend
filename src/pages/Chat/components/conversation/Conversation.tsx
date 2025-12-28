@@ -67,13 +67,17 @@ const Conversation = () => {
             key={item.userId}
             onClick={() => handleReduxStore(item.userId, item)}
           >
-            <div className={styles.imageContainer}>
-              <img
-                src={`${item.picture?.url ? item.picture?.url : "person.png"}`}
-                alt="Icon"
-                className={styles.image}
-              />
-            </div>
+            {item.picture?.url ? (
+              <div className={styles.imageContainer}>
+                <img
+                  src={item.picture?.url}
+                  alt="Icon"
+                  className={styles.image}
+                />
+              </div>
+            ) : (
+              <NavIcon name="FaRegCircleUser" className={styles.imageContainer} />
+            )}
 
             <div className={styles.wrapperContainer}>
               <div className={styles.upperContainer}>

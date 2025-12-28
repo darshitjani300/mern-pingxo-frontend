@@ -4,6 +4,7 @@ body {
   font-family: $font-primary;
   font-size: $font-size-base;
   background: $color-background;
+  box-sizing: border-box;
 }
 
 li {
@@ -12,5 +13,5 @@ li {
 }
 
 * {
-  letter-spacing: .3px;
+  letter-spacing: 0.3px;
 }

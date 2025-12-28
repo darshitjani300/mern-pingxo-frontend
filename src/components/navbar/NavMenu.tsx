@@ -4,8 +4,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../types/reduxHooks";
 import LogoutConfirmation from "../confirmation/LogoutConfirmation";
 import { useState } from "react";
-import { logout } from "../../api/authApi";
-import { toastMessage } from "../../utils/toastMessage";
 
 type NavIconType = {
   id: number;
@@ -22,6 +20,8 @@ const NavMenu = () => {
   const data = useAppSelector((state) => state.userSlice.userProfile);
   const location = useLocation();
   const [isLogout, setIsLogout] = useState(false);
+
+  console.log("Profile ", data);
 
   const icons: Array<NavIconType> = [
     {
