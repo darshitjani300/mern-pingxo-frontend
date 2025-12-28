@@ -14,6 +14,7 @@ type Props = {
   error?: string | null;
   icon?: string;
   disabled?: boolean;
+  maxLength?: number;
 };
 
 const InputComp = (props: Props) => {
@@ -27,6 +28,7 @@ const InputComp = (props: Props) => {
     error,
     icon,
     disabled = false,
+    maxLength,
   } = props;
   const [showPassword, setShowPassword] = useState(false);
 
@@ -55,6 +57,7 @@ const InputComp = (props: Props) => {
           value={value}
           onChange={onChange}
           disabled={disabled}
+          maxLength={maxLength}
         />
         {inputType === "password" && (
           <div className={styles.eye} onClick={handleShowPassword}>

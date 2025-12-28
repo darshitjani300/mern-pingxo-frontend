@@ -2,10 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import NavIcon from "../../components/icons/NavIcon";
 import styles from "./profile.module.scss";
 import { getProfileApi, profileApi } from "../../api/profile";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { toastMessage } from "../../utils/toastMessage";
 import InputComp from "../../components/input/InputComp";
+import { useAppDispatch } from "../../types/reduxHooks";
+import { userProfile } from "../../redux/features/chat/chat.slice";
 
 const Profile = () => {
   const [profileData, setProfileData] = useState({
@@ -17,7 +19,6 @@ const Profile = () => {
 
   const userString = localStorage.getItem("user");
   const [user, _] = useState(userString ? JSON.parse(userString) : "");
-  const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [saving, setSaving] = useState(false);
   const originalProfileRef = useRef<{
@@ -27,6 +28,12 @@ const Profile = () => {
     name: "",
     about: "",
   });
+  const isNameChanged =
+    profileData?.name?.trim() !== originalProfileRef.current.name;
+  const isAboutChanged =
+    profileData?.about?.trim() !== originalProfileRef.current.about;
+  const dispatch = useAppDispatch();
+  const [uploading, setUploading] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -51,20 +58,25 @@ const Profile = () => {
     const formData = new FormData();
     formData.append("picture", file);
 
+    setUploading(true);
     try {
       const result = await profileApi(formData);
+      dispatch(userProfile(result?.profile ?? {}));
+
       const pictureUrl = result?.profile?.picture?.url;
       setProfileData((prev) => ({ ...prev, pictureUrl: pictureUrl }));
     } catch (err) {
       console.log(err);
+    } finally {
+      setUploading(false);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const name = profileData.name.trim();
-    const about = profileData.about.trim();
+    const name = profileData?.name?.trim();
+    const about = profileData?.about?.trim();
 
     // ✅ validation
     if (!name || !about) {
@@ -72,12 +84,8 @@ const Profile = () => {
       return;
     }
 
-    const isNameChanged = name !== originalProfileRef.current.name;
-    const isAboutChanged = about !== originalProfileRef.current.about;
-
     // 🚫 nothing changed → don't call API
     if (!isNameChanged && !isAboutChanged && !profileData.picture) {
-      toastMessage("error", "No changes to save");
       return;
     }
 
@@ -88,15 +96,12 @@ const Profile = () => {
       formData.append("name", name);
       formData.append("about", about);
 
-      if (profileData.picture) formData.append("picture", profileData.picture);
-      await profileApi(formData);
+      const result = await profileApi(formData);
+      dispatch(userProfile(result?.profile ?? {}));
 
       toastMessage("success", "Profile has been updated");
-
-      setSaving(false);
     } catch (error) {
       console.log(error);
-      setSaving(false);
     } finally {
       setSaving(false);
     }
@@ -135,9 +140,9 @@ const Profile = () => {
     <div className={styles.wrapper}>
       <form className={styles.leftContainer} onSubmit={handleSubmit}>
         <div className={styles.leftContainerWrapper}>
-          <button onClick={() => navigate(-1)} className={styles.btnBack}>
+          <Link to={"/home"} className={styles.btnBack}>
             <NavIcon name="IoArrowBackOutline" />
-          </button>
+          </Link>
 
           <div className={styles.imageContainer}>
             <img
@@ -174,9 +179,10 @@ const Profile = () => {
               type="button"
               onClick={() => fileInputRef.current?.click()}
               className={styles.fileBtn}
+              disabled={uploading}
             >
               <NavIcon name="MdOutlineFileUpload" />
-              Upload Image
+              {uploading ? "Uploading..." : "Upload Image"}
             </button>
           </div>
 
@@ -189,6 +195,7 @@ const Profile = () => {
               onChange={handleChange}
               placeholder="Enter your name..."
               icon="BiRename"
+              maxLength={30}
             />
 
             <InputComp
@@ -199,6 +206,7 @@ const Profile = () => {
               placeholder="Enter about yourself..."
               name="about"
               icon="TiMessage"
+              maxLength={120}
             />
 
             <div className={styles.inputWrapper}>

@@ -109,6 +109,7 @@
       width: 100%;
       text-align: end;
       margin-top: 20px;
+
       .btn {
         padding: 8px 16px;
         border-radius: 8px;
@@ -116,6 +117,10 @@
         cursor: pointer;
         border: none;
         transition: all 0.2s ease;
+
+        &:disabled {
+          background-color: $violet-400;
+        }
 
         &.danger {
           background: $color-primary;
@@ -130,10 +135,6 @@
       @include respond("md") {
         display: none;
       }
-    }
-
-    @include respond("md") {
-      width: 45%;
     }
 
     .signOutBtn {
@@ -159,5 +160,11 @@
     text-align: center;
     padding: 0px 30px;
     line-height: 40px;
+  }
+
+  height: 100vh;
+
+  @include respond("md") {
+    height: auto;
   }
 }

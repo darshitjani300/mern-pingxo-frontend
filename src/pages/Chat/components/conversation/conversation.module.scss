@@ -41,12 +41,11 @@
 
       .imageContainer {
         flex-shrink: 0;
-        height: 50px;
-        width: 50px;
+        height: 45px;
+        width: 45px;
         border-radius: 50%;
         overflow: hidden;
-        border: 1px solid $color-secondary-bg;
-        border-color: transparent;
+        border: 1px solid transparent;
 
         .image {
           height: 100%;
@@ -86,11 +85,11 @@
           min-width: 0;
 
           .chat {
-            flex: 1 1 0%;
+            width: 100%;
+            max-width: 300px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            min-width: 0;
           }
 
           .pinIcon {

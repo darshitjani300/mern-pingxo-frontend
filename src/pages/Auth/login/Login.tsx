@@ -31,9 +31,15 @@ const Login = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const { checkAuth } = useAuth();
+  const EMAIL_MAX_LENGTH = 254;
+  const PASSWORD_MAX_LENGTH = 64;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    if (name === "email" && value.length > EMAIL_MAX_LENGTH) return;
+    if (name === "password" && value.length > PASSWORD_MAX_LENGTH) return;
+
     setUserData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -132,6 +138,7 @@ const Login = () => {
                   onChange={handleChange}
                   error={errorState.email}
                   icon="MdOutlineEmail"
+                  maxLength={EMAIL_MAX_LENGTH}
                 />
                 <InputComp
                   placeholder="Enter password"
@@ -142,6 +149,7 @@ const Login = () => {
                   name={"password"}
                   error={errorState.password}
                   icon="MdLockOutline"
+                  maxLength={PASSWORD_MAX_LENGTH}
                 />
               </div>
 

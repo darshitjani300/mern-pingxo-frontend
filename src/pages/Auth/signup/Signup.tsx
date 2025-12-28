@@ -35,13 +35,22 @@ const Signup = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const { checkAuth } = useAuth();
   const navigate = useNavigate();
+  const USER_MAX_LENGTH = 30;
+  const EMAIL_MAX_LENGTH = 254;
+  const PASSWORD_MAX_LENGTH = 64;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    if (name === "username" && name.length >= USER_MAX_LENGTH) return;
+    if (name === "email" && name.length >= EMAIL_MAX_LENGTH) return;
+    if (name === "password" && name.length >= PASSWORD_MAX_LENGTH) return;
+
     setUserData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
+
     if (name) {
       setErrorState((prevState) => ({
         ...prevState,
@@ -133,6 +142,7 @@ const Signup = () => {
                   onChange={handleChange}
                   error={errorState.username}
                   icon="RiUser3Line"
+                  maxLength={USER_MAX_LENGTH}
                 />
                 <InputComp
                   placeholder="Enter email"
@@ -143,6 +153,7 @@ const Signup = () => {
                   name={"email"}
                   error={errorState.email}
                   icon="MdOutlineEmail"
+                  maxLength={EMAIL_MAX_LENGTH}
                 />
                 <InputComp
                   placeholder="Enter password"
@@ -153,6 +164,7 @@ const Signup = () => {
                   name={"password"}
                   error={errorState.password}
                   icon="MdLockOutline"
+                  maxLength={PASSWORD_MAX_LENGTH}
                 />
               </div>
               <ButtonComp btn="Sign up" loading={loading} />
